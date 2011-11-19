@@ -43,12 +43,7 @@
       // check for exclusions
       if([self respondsToSelector:@selector(excludedPropertyNames)] && [[self performSelector:@selector(excludedPropertyNames)] containsObject:propName])
         continue; // skip this one 
-      
-      if([[propName substringToIndex:1] isEqualToString:@"_"]) {
-        NSLog(@"PRIVATE PROPERTY! %@", propName);
-        continue;
-      }
-      
+
       [propertyNames setObject:[self getPropertyType:type] forKey:propName];
 		}
 		
