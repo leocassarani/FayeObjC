@@ -26,29 +26,40 @@
 //
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-  #import <Cocoa/Cocoa.h>
+    #import <Cocoa/Cocoa.h>
 #else
-  #import <UIKit/UIKit.h>
+    #import <UIKit/UIKit.h>
 #endif
+
+typedef enum {
+    HANDSHAKE,
+    CONNECT,
+    DISCONNECT,
+    SUBSCRIBE,
+    UNSUBSCRIBE,
+    ACTIVE,
+    OTHER
+} BayeuxChannel;
+
 /*
  Represents the faye message structure
  */
 
 @interface FayeMessage : NSObject {
-  NSString *channel;
-  NSString *clientId;
-  NSNumber *successful;
-  NSNumber *authSuccessful;
-  NSString *version;
-  NSString *minimumVersion;  
-  NSArray *supportedConnectionTypes;
-  NSDictionary *advice;
-  NSString *error;
-  NSString *subscription;
-  NSDate *timestamp;
-  NSDictionary *data;
-  NSDictionary *ext;
-  NSString *fayeId; // converted from "id" in bayeux protocol
+    NSString *channel;
+    NSString *clientId;
+    NSNumber *successful;
+    NSNumber *authSuccessful;
+    NSString *version;
+    NSString *minimumVersion;  
+    NSArray *supportedConnectionTypes;
+    NSDictionary *advice;
+    NSString *error;
+    NSString *subscription;
+    NSDate *timestamp;
+    NSDictionary *data;
+    NSDictionary *ext;
+    NSString *fayeId; // converted from "id" in bayeux protocol
 }
 
 @property (retain) NSString *channel;
@@ -66,6 +77,8 @@
 @property (retain) NSDictionary *ext;
 @property (retain) NSString *fayeId;
 
-- (id) initWithDict:(NSDictionary *)dict;
+- (id)initWithDictionary:(NSDictionary *)dict;
+- (BOOL)isSuccessful;
+- (BayeuxChannel)channelTypeWithActiveChannel:(NSString *)activeChannel;
 
 @end

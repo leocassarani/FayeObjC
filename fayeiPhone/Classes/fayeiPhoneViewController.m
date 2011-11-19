@@ -6,9 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "fayeiPhoneViewController.h"
+#import "FayeiPhoneViewController.h"
 
-@implementation fayeiPhoneViewController
+@implementation FayeiPhoneViewController
 
 @synthesize faye;
 @synthesize connected;
@@ -44,7 +44,7 @@
   [nc addObserver:self selector:@selector(keyboardWillHide:) name: UIKeyboardWillHideNotification object:nil];    
   
   self.connected = NO;
-  self.faye = [[FayeClient alloc] initWithURLString:@"ws://YOUR_SERVER_HERE:PORT/faye" channel:@"/testing"];
+  self.faye = [[FayeClient alloc] initWithURLString:@"ws://localhost:9292/faye" channel:@"/testing"];
   self.faye.delegate = self;
   [faye connectToServer];
 }
@@ -102,11 +102,11 @@
 
 #pragma mark -
 #pragma mark FayeObjc delegate
-- (void) messageReceived:(NSDictionary *)messageDict {
-  DLog(@"message recieved %@", messageDict);
-  if([messageDict objectForKey:@"message"]) {    
+
+- (void)messageReceived:(NSDictionary *)messageDict {
+  DLog(@"message received %@", messageDict);
+  if ([messageDict objectForKey:@"message"]) {
     self.messageView.text = [self.messageView.text stringByAppendingString:[NSString stringWithFormat:@"%@\n", [messageDict objectForKey:@"message"]]]; 
-    //[self.messagesText insertText:[NSString stringWithFormat:@"%@\n", [messageDict objectForKey:@"message"]]];
   }
 }
 
@@ -138,12 +138,12 @@
 }
 
 - (void)dealloc {
-  [messageTextField release];
-	[editToolbar release];
-  [messageView release];
-  faye.delegate = nil;
-  [faye release];
-  [super dealloc];
+    [messageTextField release];
+    [editToolbar release];
+    [messageView release];
+    faye.delegate = nil;
+    [faye release];
+    [super dealloc];
 }
 
 @end

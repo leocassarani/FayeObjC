@@ -7,7 +7,7 @@
 //
 
 #import "fayeiPhoneAppDelegate.h"
-#import "fayeiPhoneViewController.h"
+#import "FayeiPhoneViewController.h"
 
 @implementation fayeiPhoneAppDelegate
 

@@ -84,6 +84,7 @@
 		69658B571321C71300151F3D /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		69658BAD1321CAB700151F3D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* fayeiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "fayeiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B30F66CA147745A00025A817 /* Channels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channels.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +178,7 @@
 			children = (
 				5D4CF50F1332438700738FDE /* JSONKit */,
 				69658B321321C71300151F3D /* Extensions */,
+				B30F66CA147745A00025A817 /* Channels.h */,
 				69658B461321C71300151F3D /* FayeClient.h */,
 				69658B471321C71300151F3D /* FayeClient.m */,
 				69658B481321C71300151F3D /* FayeMessage.h */,

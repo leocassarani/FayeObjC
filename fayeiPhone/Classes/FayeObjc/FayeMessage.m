@@ -25,7 +25,9 @@
 //  FayeObjC
 //
 
+#import "Channels.h"
 #import "FayeMessage.h"
+#import "JSONKit.h"
 #import "NSObject+PropertySupport.h"
 #import "NSObject+Serialize.h"
 
@@ -46,52 +48,84 @@
 @synthesize ext;
 @synthesize fayeId;
 
-- (id) initWithDict:(NSDictionary *)dict
-{
-  self = [super init];
-  if (self != nil) {
+- (id)initWithDictionary:(NSDictionary *)dict {
+    if (!(self = [super init])) {
+        return nil;
+    }
+    
     NSDictionary *objectPropertyNames = [[self class] propertyNamesAndTypes];
-    for(NSString *propName in [FayeMessage propertyNames]) {
-      if([dict objectForKey:propName]) {        
-        Class propertyClass = [[self class] propertyClass:[objectPropertyNames objectForKey:propName]];
-        id value = [propertyClass deserialize:[dict objectForKey:propName]];
-        if(![value isEqual:[NSNull null]]) {          
-          [self setValue:value forKey:propName];     
+    for (NSString *propName in [FayeMessage propertyNames]) {
+        if ([propName isEqualToString:@"data"] && [dict objectForKey:@"data"]) {
+            self.data = [[dict objectForKey:@"data"] objectFromJSONString];
         }
-      }
-    }    
-  }
-  return self;
+        else if ([dict objectForKey:propName]) {
+            Class propertyClass = [[self class] propertyClass:[objectPropertyNames objectForKey:propName]];
+            id value = [propertyClass deserialize:[dict objectForKey:propName]];
+            if (![value isEqual:[NSNull null]]) {    
+                [self setValue:value forKey:propName];
+            }
+        }
+    }
+    
+    return self;
 }
 
-- (NSString*)description {
-  NSString *desc = @"\n";
-  for(NSString *propName in [FayeMessage propertyNames]) {
-    if([self valueForKey:propName])
-      desc = [desc stringByAppendingFormat:@"%@ : %@\n", propName, [self valueForKey:propName]];    
-  }
-  
-  return desc;
+- (NSString *)description {
+    NSString *desc = @"\n";
+    for (NSString *propName in [FayeMessage propertyNames]) {
+        if([self valueForKey:propName])
+            desc = [desc stringByAppendingFormat:@"%@ : %@\n", propName, [self valueForKey:propName]];    
+    }
+    
+    return desc;
+}
+
+- (BOOL)isSuccessful {
+    return [self.successful boolValue];
+}
+
+- (BayeuxChannel)channelTypeWithActiveChannel:(NSString *)activeChannel {
+    if ([self.channel isEqualToString:HANDSHAKE_CHANNEL]) {
+        return HANDSHAKE;
+    }
+    else if ([self.channel isEqualToString:CONNECT_CHANNEL]) {
+        return CONNECT;
+    }
+    else if ([self.channel isEqualToString:DISCONNECT_CHANNEL]) {
+        return DISCONNECT;
+    }
+    else if ([self.channel isEqualToString:SUBSCRIBE_CHANNEL]) {
+        return SUBSCRIBE;
+    }
+    else if ([self.channel isEqualToString:UNSUBSCRIBE_CHANNEL]) {
+        return UNSUBSCRIBE;
+    }
+    else if (activeChannel && [self.channel isEqualToString:activeChannel]) {
+        return ACTIVE;
+    }
+    else {
+        return OTHER;
+    }
 }
 
 #pragma mark -
-- (void) dealloc
-{
-  [channel release];
-  [clientId release];
-  [successful release];
-  [authSuccessful release];
-  [version release];
-  [minimumVersion release];
-  [supportedConnectionTypes release];
-  [advice release];
-  [error release];
-  [subscription release];
-  [timestamp release];
-  [data release];
-  [ext release];
-  [fayeId release];
-  [super dealloc];
+
+- (void) dealloc {
+    [channel release];
+    [clientId release];
+    [successful release];
+    [authSuccessful release];
+    [version release];
+    [minimumVersion release];
+    [supportedConnectionTypes release];
+    [advice release];
+    [error release];
+    [subscription release];
+    [timestamp release];
+    [data release];
+    [ext release];
+    [fayeId release];
+    [super dealloc];
 }
 
 
