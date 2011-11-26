@@ -32,32 +32,16 @@
 
 #import "JSONKit.h"
 #import "ZTWebSocket.h"
-enum _fayeStates {
-  kWebSocketDisconnected,
-  kWebSocketConnected,
-  kFayeDisconnected,
-  kFayeConnected  
-} fayeStates;
-
-// Bayeux protocol channels
-#define HANDSHAKE_CHANNEL @"/meta/handshake"
-#define CONNECT_CHANNEL @"/meta/connect"
-#define DISCONNECT_CHANNEL @"/meta/disconnect"
-#define SUBSCRIBE_CHANNEL @"/meta/subscribe"
-#define UNSUBSCRIBE_CHANNEL @"/meta/unsubscribe"
 
 @protocol FayeClientDelegate <NSObject>
-
-- (void)messageReceived:(NSDictionary *)messageDict;
+- (void)messageReceived:(NSDictionary *)message;
 - (void)connectedToServer;
 - (void)disconnectedFromServer;
 @optional
 - (void)socketDidSendMessage:(ZTWebSocket *)aWebSocket;
 - (void)subscriptionFailedWithError:(NSString *)error;
 - (void)subscribedToChannel:(NSString *)channel;
-
 @end
-
 
 @interface FayeClient : NSObject <ZTWebSocketDelegate> {
   NSString *fayeURLString;
