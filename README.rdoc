@@ -2,21 +2,11 @@
 
 A simple Objective-C client library for the Faye publish-subscribe messaging server. FayeObjC is implementing on top of the zimt Objective-C web socket library and will work on both Mac and iPhone projects. JSON parsing is handled using the excellent JSONKit (https://github.com/johnezang/JSONKit) library which is included in the FayeObjC source folder.
 
-= Mac Test Client
-
-Included in the repository is a zipped release build of the FayeObjC Mac client.  This client allows you to test your Faye server, it connects over a websocket connection to the server specified and subscribes to the channel specified and will send messages via the server/channel it is connected to.
-
-The messages are of the form { message: "some text" }
-
-If you want to use the mac client to connect and test your faye server just unzip and start it on any mac.
-
-The Mac client is available in the Downloads section of the repo - click "Downloads" to access it.
-
 = Building the library
 
 Using it in a Mac project:
 
-Using FayeObjC is as simple as adding the FayeObjC source folder to your Xcode project directory and then adding it to the project.  FayeObjc has only one dependency the CoreServices.framework on Mac OS X which is used by AsyncSocket (part of the zimt websocket library).  
+Using FayeObjC is as simple as adding the FayeObjC source folder to your Xcode project directory and then adding it to the project.  FayeObjc has only one dependency the CoreServices.framework on Mac OS X which is used by AsyncSocket (part of the zimt websocket library).
 
 Add the CoreServices.framework to your project by right clicking on Linked Frameworks in the Project and selecting Add->Existing Frameworks...
 
@@ -38,15 +28,15 @@ Initialize a Client:
   faye.delegate = self; // ensure that you implement the FayeClientDelegate functions
   // connect to the server
   [faye connectToServer];
-  
+
 Implement the FayeClientDelegate:
   - (void) messageReceived:(NSDictionary *)messageDict {
     DLog(@"message received");
-    // do something useful with the message dictionary    
+    // do something useful with the message dictionary
   }
 
   - (void)connectedToServer {
-    // Faye connection established    
+    // Faye connection established
   }
 
   - (void)disconnectedFromServer {
@@ -54,27 +44,27 @@ Implement the FayeClientDelegate:
   }
 
 Send a message to the Server:
-  // The message dictionary can be any dictionary structure that you want to send via the connected channel 
+  // The message dictionary can be any dictionary structure that you want to send via the connected channel
   NSDictionary *messageDict = [NSDictionary dictionaryWithObjectsAndKeys: @"Some message text", @"message", @"some meta information", @"meta", nil];
   [faye sendMessage:messageDict];
 
 
 Using Bayeux Extensions:
-  // Faye supports extensions to accomplish things like authentication  
+  // Faye supports extensions to accomplish things like authentication
   // import the client
   #import "FayeClient.h"
 
   // init the FayeClient with a server and channel to subscribe to
   FayeClient *faye = [[FayeClient alloc] initWithURLString:@"ws://localhost:8000/faye" channel:@"/chat"];
   faye.delegate = self; // ensure that you implement the FayeClientDelegate functions
-  
+
   // setup the extension and connect to the server
   NSDictionary *ext = [NSDictionary dictionaryWithObjectsAndKeys:@"testing", @"authToken", nil];
   [faye connectToServerWithExt:ext];
-        
+
   // sending an extension with a standard message
   NSDictionary *messageDict = [NSDictionary dictionaryWithObjectsAndKeys: @"Some message text", @"message", @"some meta information", @"meta", nil];
-  
+
   NSDictionary *ext = [NSDictionary dictionaryWithObjectsAndKeys:@"testing", @"authToken", nil];
   [faye sendMessage:messageDict withExt:ext];
 
